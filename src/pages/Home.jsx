@@ -1,18 +1,19 @@
-import CoinSection from "../components/CoinSection"
-import NavBar from "../components/NavBar"
-import NewsSection from "../components/NewsSection"
-
+import CoinSection from "../components/CoinSection";
+import NavBar from "../components/NavBar";
+import NewsSection from "../components/NewsSection";
 
 function Home() {
+  return (
+    <>
+      <NavBar></NavBar>
 
-    return (
-        <>
-        <NavBar ></NavBar>
+      <div className="my-20">
         <CoinSection></CoinSection>
-        <NewsSection></NewsSection>
-        </>
-            
-    )
+      </div>
+
+      <NewsSection></NewsSection>
+    </>
+  );
 }
 
-export default Home
+export default Home;
