@@ -7,6 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./Coinsection.css";
 import axios from "axios";
+import { Card, CardContent, Typography, Avatar } from "@mui/joy";
 
 function CoinSection() {
   const [topCoins, setTopCoins] = useState([]);
@@ -43,20 +44,37 @@ function CoinSection() {
         pagination={{
           clickable: true,
         }}
-        //   autoplay={{
-        //     delay: 2000,
-        //     disableOnInteraction: false,
-        //   }}
+        // autoplay={{ delay: 3000, disableOnInteraction: false }}
       >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
+        {topCoins.map((coin) => (
+          <SwiperSlide key={coin.id}>
+            <Card
+              variant="plain"
+              sx={{
+                maxWidth: 250,
+                margin: "auto",
+                textAlign: "center",
+                boxShadow: 3,
+                padding: 2,
+                backgroundColor: "transparent",
+              }}
+            >
+              <CardContent>
+                <Avatar
+                  src={coin.image}
+                  alt={coin.symbol.toUpperCase()}
+                  sx={{ width: 60, height: 60, margin: "auto" }}
+                />
+                <Typography variant="h6" sx={{ mt: 2 }}>
+                  {coin.symbol.toUpperCase()}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  ${coin.current_price.toFixed(2)}
+                </Typography>
+              </CardContent>
+            </Card>
+          </SwiperSlide>
+        ))}
       </Swiper>
     </>
   );
