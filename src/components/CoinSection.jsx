@@ -16,7 +16,7 @@ function CoinSection() {
     axios
       .get(
         `https://api.coingecko.com/api/v3/coins/markets?x-cg-demo-api-key=${
-          import.meta.env.VITE_API_KEY
+          import.meta.env.VITE_COINS_API_KEY
         }&vs_currency=usd&per_page=10`
       )
       .then((response) => {
