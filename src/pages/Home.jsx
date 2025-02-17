@@ -5,8 +5,6 @@ import NewsSection from "../components/NewsSection";
 function Home() {
   return (
     <>
-      <NavBar></NavBar>
-
       <div className="my-20">
         <CoinSection></CoinSection>
       </div>
