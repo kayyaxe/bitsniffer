@@ -1,53 +1,65 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NewsCard from "../components/NewsCard";
-import { Input, Button, CircularProgress } from "@mui/joy";
+import { Input, CircularProgress } from "@mui/joy";
 import { debounce } from "lodash"; // Using lodash for debouncing
-
 
 function AllNews() {
   const [news, setNews] = useState([]);
-  const [query, setQuery] = useState("crypto"); // Default search term
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // User's search term
+  const [filteredNews, setFilteredNews] = useState([]); // Filtered news based on search term
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null); // Declare error state here
+  const [error, setError] = useState(null);
 
+  // Constant query for "crypto"
+  const query = "crypto";
+
+  // Fetch news when the component mounts
   useEffect(() => {
     const fetchNews = async () => {
-        if (!query) return; // Avoid API call if query is empty
-        setLoading(true);
-        setError(null);
-        try {
-          const response = await axios.get(
-            `https://gnews.io/api/v4/search?q=${query}&apikey=${
-              import.meta.env.VITE_NEWS_API_KEY
-            }&lang=en&max=10`
-          );
-          setNews(response.data.articles || []);
-        } catch (error) {
-          setError("Failed to fetch news. Please try again later.");
-          console.error(error);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchNews();
-    }, [query]); // Fetch news when query changes
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axios.get(
+          `https://gnews.io/api/v4/search?q=${query}&apikey=${
+            import.meta.env.VITE_NEWS_API_KEY
+          }&lang=en&max=10`
+        );
+        setNews(response.data.articles || []);
+        setFilteredNews(response.data.articles || []); // Set initial filtered news to fetched news
+      } catch (error) {
+        setError("Failed to fetch news. Please try again later.");
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-     // Debounced search function
+    fetchNews();
+  }, []); // Only fetch once on component mount
+
+  // Debounced search function to update the search term
   const debouncedSearch = debounce((value) => {
-    setQuery(value); // Trigger the search once the user stops typing
-  }, 500); // 500ms debounce
+    setSearchTerm(value); // Set search term when user stops typing
+  }, 1);
 
-
-  // Handle search when clicking the button
+  // Handle input change and update search term
   const handleInputChange = (e) => {
     const value = e.target.value.trim();
-    setSearchTerm(value);
-    debouncedSearch(value); // Call debounced function
-    
+    debouncedSearch(value); // Trigger the debounced search
   };
+
+  // Filter news based on the search term
+  useEffect(() => {
+    if (searchTerm === "") {
+      setFilteredNews(news); // If search term is empty, show all news
+    } else {
+      const filtered = news.filter((article) =>
+        article.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredNews(filtered); // Update filtered news based on search term
+    }
+  }, [searchTerm, news]); // Re-run filtering whenever search term or news changes
 
   return (
     <div>
@@ -58,7 +70,7 @@ function AllNews() {
         <Input
           placeholder="Search news..."
           value={searchTerm}
-          onChange={handleInputChange} // Update search term and trigger query change immediately
+          onChange={handleInputChange} // Update search term
           sx={{ width: "700px" }}
         />
       </div>
@@ -77,7 +89,6 @@ function AllNews() {
         </div>
       )}
 
-
       {/* News Display */}
       <div
         className="news-container"
@@ -88,8 +99,8 @@ function AllNews() {
           flexWrap: "wrap",
         }}
       >
-        {news.length > 0 ? (
-          news.map((article) => <NewsCard key={article.url} news={article} />)
+        {filteredNews.length > 0 ? (
+          filteredNews.map((article) => <NewsCard key={article.url} news={article} />)
         ) : (
           <p>No news found. Try a different keyword.</p>
         )}
