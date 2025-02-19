@@ -26,32 +26,33 @@ function AllCoins() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${rowsPerPage}&page=${
-          page + 1
-        }&price_change_percentage=7d&x-cg-demo-api-key=${
-          import.meta.env.VITE_COINS_API_KEY
-        }`
-      )
-      .then((response) => {
+    const fetchCoins = async (apiKey) => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${rowsPerPage}&page=${
+            page + 1
+          }&price_change_percentage=7d&x-cg-demo-api-key=${apiKey}`
+        );
         setCoins(response.data);
-        setFilteredCoins(response.data); // Set initial filtered coins to all coins
-      })
-      .catch((error) => {
+        setFilteredCoins(response.data);
+      } catch (error) {
         console.error("Error fetching data:", error);
         setError("Failed to fetch coins. Please try again later.");
-      })
-      .finally(() => setLoading(false));
-  }, [page, rowsPerPage]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Pagination Handlers
-  const handleChangePage = (_, newPage) => setPage(newPage);
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+    const primaryApiKey = import.meta.env.VITE_COINS_API_KEY;
+    const backupApiKey = import.meta.env.VITE_BACKUP_COINS_API_KEY;
+
+    // First attempt with the primary API key
+    fetchCoins(primaryApiKey).catch(() => {
+      // If it fails, attempt with the backup API key
+      fetchCoins(backupApiKey);
+    });
+  }, [page, rowsPerPage]);
 
   // Handle search input change
   const handleSearchChange = (e) => {
