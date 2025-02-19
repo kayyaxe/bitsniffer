@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { CircularProgress } from "@mui/material"; 
-import { Link } from "react-router-dom"; 
+import { CircularProgress } from "@mui/material";
+import { Link } from "react-router-dom";
 
 import {
   Table,
@@ -59,8 +59,10 @@ function AllCoins() {
     setQuery(value);
 
     // Filter coins based on the search query
-    const filtered = coins.filter((coin) =>
-      coin.name.toLowerCase().includes(value) || coin.symbol.toLowerCase().includes(value)
+    const filtered = coins.filter(
+      (coin) =>
+        coin.name.toLowerCase().includes(value) ||
+        coin.symbol.toLowerCase().includes(value)
     );
     setFilteredCoins(filtered); // Update filtered coins
   };
@@ -77,19 +79,33 @@ function AllCoins() {
           placeholder="Search for a coin..."
           value={query}
           onChange={handleSearchChange} // Update search query
-          sx={{ width: "100%", padding: "10px" , color: "white",}} />
+          sx={{ width: "100%", padding: "10px", color: "white" }}
+        />
       </div>
 
       {/* Loading Spinner */}
       {loading && (
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "20px",
+          }}
+        >
           <CircularProgress />
         </div>
       )}
 
       {/* Error Message */}
       {error && (
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px", color: "red" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "20px",
+            color: "red",
+          }}
+        >
           <p>{error}</p>
         </div>
       )}
@@ -113,31 +129,48 @@ function AllCoins() {
               <TableRow key={coin.id}>
                 <TableCell>{coin.market_cap_rank}</TableCell>
                 <TableCell>
-                <Link to={`/coin/${coin.id}`} style={{ textDecoration: "none", color: "inherit" }}>
-                  <img
-                    src={coin.image}
-                    alt={coin.name}
-                    width="20"
-                    style={{ marginRight: 8, verticalAlign: "middle" }}
-                  />
-                  {coin.name}
+                  <Link
+                    to={`/coin/${coin.id}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <img
+                      src={coin.image}
+                      alt={coin.name}
+                      width="20"
+                      style={{ marginRight: 8, verticalAlign: "middle" }}
+                    />
+                    {coin.name}
                   </Link>
                 </TableCell>
-                <TableCell align="right">${coin.current_price.toLocaleString()}</TableCell>
+                <TableCell align="right">
+                  ${coin.current_price.toLocaleString()}
+                </TableCell>
                 <TableCell
                   align="right"
-                  style={{ color: coin.price_change_percentage_24h >= 0 ? "green" : "red" }}
+                  style={{
+                    color:
+                      coin.price_change_percentage_24h >= 0 ? "green" : "red",
+                  }}
                 >
                   {coin.price_change_percentage_24h?.toFixed(2)}%
                 </TableCell>
                 <TableCell
                   align="right"
-                  style={{ color: coin.price_change_percentage_7d_in_currency >= 0 ? "green" : "red" }}
+                  style={{
+                    color:
+                      coin.price_change_percentage_7d_in_currency >= 0
+                        ? "green"
+                        : "red",
+                  }}
                 >
                   {coin.price_change_percentage_7d_in_currency?.toFixed(2)}%
                 </TableCell>
-                <TableCell align="right">${coin.market_cap.toLocaleString()}</TableCell>
-                <TableCell align="right">${coin.total_volume.toLocaleString()}</TableCell>
+                <TableCell align="right">
+                  ${coin.market_cap.toLocaleString()}
+                </TableCell>
+                <TableCell align="right">
+                  ${coin.total_volume.toLocaleString()}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
