@@ -16,14 +16,12 @@ function AllNews() {
 
   // Fetch news when the component mounts
   useEffect(() => {
-    const fetchNews = async () => {
+    const fetchNews = async (apiKey) => {
       setLoading(true);
       setError(null);
       try {
         const response = await axios.get(
-          `https://gnews.io/api/v4/search?q=${query}&apikey=${
-            import.meta.env.VITE_NEWS_API_KEY
-          }&lang=en&max=10`
+          `https://gnews.io/api/v4/search?q=${query}&apikey=${apiKey}&lang=en&max=10`
         );
         setNews(response.data.articles || []);
         setFilteredNews(response.data.articles || []); // Set initial filtered news to fetched news
@@ -35,8 +33,15 @@ function AllNews() {
       }
     };
 
-    fetchNews();
-  }, []); // Only fetch once on component mount
+    const primaryApiKey = import.meta.env.VITE_NEWS_API_KEY;
+    const backupApiKey = import.meta.env.VITE_BACKUP_NEWS_API_KEY;
+
+    // First attempt with the primary API key
+    fetchNews(primaryApiKey).catch(() => {
+      // If it fails, attempt with the backup API key
+      fetchNews(backupApiKey);
+    });
+  }, []);
 
   // Debounced search function to update the search term
   const debouncedSearch = debounce((value) => {
@@ -66,7 +71,14 @@ function AllNews() {
       <h1 className="mb-5">Top Cryptocurrency News 📰</h1>
 
       {/* Search Bar */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "100px", marginBottom: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "100px",
+          marginBottom: "20px",
+        }}
+      >
         <Input
           placeholder="Search news..."
           value={searchTerm}
@@ -77,14 +89,27 @@ function AllNews() {
 
       {/* Loading Spinner */}
       {loading && (
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "20px",
+          }}
+        >
           <CircularProgress />
         </div>
       )}
 
       {/* Error Message */}
       {error && (
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px", color: "red" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "20px",
+            color: "red",
+          }}
+        >
           <p>{error}</p>
         </div>
       )}
@@ -100,7 +125,9 @@ function AllNews() {
         }}
       >
         {filteredNews.length > 0 ? (
-          filteredNews.map((article) => <NewsCard key={article.url} news={article} />)
+          filteredNews.map((article) => (
+            <NewsCard key={article.url} news={article} />
+          ))
         ) : (
           <p>No news found. Try a different keyword.</p>
         )}

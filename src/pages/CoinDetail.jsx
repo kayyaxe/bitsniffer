@@ -5,7 +5,6 @@ import {
   CircularProgress,
   Typography,
   Card,
-  CardContent,
   Grid,
   Box,
   Button,
@@ -41,29 +40,40 @@ function CoinDetail() {
   const [error, setError] = useState(null);
   const [timeframe, setTimeframe] = useState("24h");
 
+  // Define API keys
+  const primaryApiKey = import.meta.env.VITE_COINS_API_KEY;
+  const backupApiKey = import.meta.env.VITE_BACKUP_COINS_API_KEY;
+
+  // Fetch coin details
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`https://api.coingecko.com/api/v3/coins/${coinId}`)
-      .then((response) => {
+    const fetchCoinDetails = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `https://api.coingecko.com/api/v3/coins/${coinId}`
+        );
         setCoinData(response.data);
-      })
-      .catch((error) => {
+      } catch (error) {
         setError("Failed to fetch coin details.");
         console.error(error);
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCoinDetails();
   }, [coinId]);
 
+  // Fetch chart data based on timeframe
   useEffect(() => {
-    if (coinId) {
-      axios
-        .get(
-          `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${
-            timeframe === "24h" ? 1 : timeframe === "30d" ? 30 : 90
-          }`
-        )
-        .then((response) => {
+    const fetchChartData = async (apiKey) => {
+      if (coinId) {
+        try {
+          const response = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${
+              timeframe === "24h" ? 1 : timeframe === "30d" ? 30 : 90
+            }&x-cg-demo-api-key=${apiKey}`
+          );
           const prices = response.data.prices;
           const chartLabels = prices.map((price) =>
             new Date(price[0]).toLocaleDateString()
@@ -82,13 +92,21 @@ function CoinDetail() {
               },
             ],
           });
-        })
-        .catch((error) => {
+        } catch (error) {
+          console.error("Failed to fetch chart data:", error);
           setError("Failed to fetch chart data.");
-          console.error(error);
-        });
-    }
-  }, [coinId, timeframe]);
+        }
+      }
+    };
+
+    // Attempt to fetch chart data with primary API key first
+    fetchChartData(primaryApiKey).catch(() => {
+      // If the primary key fails, attempt to fetch with the backup API key
+      fetchChartData(backupApiKey).catch(() => {
+        setError("Failed to fetch chart data with both API keys.");
+      });
+    });
+  }, [coinId, timeframe, primaryApiKey, backupApiKey]);
 
   const handleTimeframeChange = (newTimeframe) => {
     setTimeframe(newTimeframe);
