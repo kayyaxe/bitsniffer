@@ -5,7 +5,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "./Coinsection.css";
+import "./CoinSection.css";
 import axios from "axios";
 import { Card, CardContent, Typography, Avatar } from "@mui/joy";
 
