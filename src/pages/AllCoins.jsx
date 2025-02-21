@@ -68,6 +68,17 @@ function AllCoins() {
     setFilteredCoins(filtered); // Update filtered coins
   };
 
+  // Handle page change
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Handle rows per page change
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to the first page
+  };
+
   return (
     <div>
       <Typography variant="h4" gutterBottom>

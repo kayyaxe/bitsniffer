@@ -1,47 +1,21 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import NewsCard from "../components/NewsCard";
 import { Input, CircularProgress } from "@mui/joy";
 import { debounce } from "lodash"; // Using lodash for debouncing
 
-function AllNews() {
-  const [news, setNews] = useState([]);
+function AllNews({ news, loading, error }) {
   const [searchTerm, setSearchTerm] = useState(""); // User's search term
   const [filteredNews, setFilteredNews] = useState([]); // Filtered news based on search term
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  // Constant query for "crypto"
-  const query = "crypto";
-
-  // Fetch news when the component mounts
+  // Set initial filtered news to fetched news
   useEffect(() => {
-    const fetchNews = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await axios.get(
-          `https://gnews.io/api/v4/search?q=${query}&apikey=${
-            import.meta.env.VITE_NEWS_API_KEY
-          }&lang=en&max=10`
-        );
-        setNews(response.data.articles || []);
-        setFilteredNews(response.data.articles || []); // Set initial filtered news to fetched news
-      } catch (error) {
-        setError("Failed to fetch news. Please try again later.");
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNews();
-  }, []); // Only fetch once on component mount
+    setFilteredNews(news);
+  }, [news]); // Update filtered news whenever the news changes
 
   // Debounced search function to update the search term
   const debouncedSearch = debounce((value) => {
     setSearchTerm(value); // Set search term when user stops typing
-  }, 1);
+  }, 300); // Set a reasonable debounce time
 
   // Handle input change and update search term
   const handleInputChange = (e) => {
@@ -66,7 +40,14 @@ function AllNews() {
       <h1 className="mb-5">Top Cryptocurrency News 📰</h1>
 
       {/* Search Bar */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "100px", marginBottom: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "100px",
+          marginBottom: "20px",
+        }}
+      >
         <Input
           placeholder="Search news..."
           value={searchTerm}
@@ -77,14 +58,27 @@ function AllNews() {
 
       {/* Loading Spinner */}
       {loading && (
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "20px",
+          }}
+        >
           <CircularProgress />
         </div>
       )}
 
       {/* Error Message */}
       {error && (
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px", color: "red" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "20px",
+            color: "red",
+          }}
+        >
           <p>{error}</p>
         </div>
       )}
@@ -100,7 +94,9 @@ function AllNews() {
         }}
       >
         {filteredNews.length > 0 ? (
-          filteredNews.map((article) => <NewsCard key={article.url} news={article} />)
+          filteredNews.map((article) => (
+            <NewsCard key={article.url} news={article} />
+          ))
         ) : (
           <p>No news found. Try a different keyword.</p>
         )}

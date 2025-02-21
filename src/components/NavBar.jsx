@@ -5,6 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/joy/IconButton"; // Import IconButton from MUI Joy
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"; // Import back arrow
 import { Link } from "react-router-dom"; // Import Link for routing
+import { styled, useTheme } from "@mui/material/styles";
 
 function NavBar() {
   const [open, setOpen] = React.useState(false);

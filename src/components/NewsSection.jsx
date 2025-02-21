@@ -1,30 +1,22 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import NewsCard from "./NewsCard"; // Import NewsCard
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
-function NewsSection({ count = 3 }) {  // Default to 3 news articles
-  const [topNews, setTopNews] = useState([]);
+function NewsSection({ news, loading, error }) {
+  if (loading) {
+    return <p>Loading news...</p>; // Display loading message
+  }
 
-  useEffect(() => {
-    axios
-      .get(
-        `https://gnews.io/api/v4/search?q=crypto&apikey=${
-          import.meta.env.VITE_NEWS_API_KEY
-        }&lang=en&max=${count}`
-      )
-      .then((response) => {
-        setTopNews(response.data.articles || []);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [count]); // Refetch when count changes
+  if (error) {
+    return <p>{error}</p>; // Display error message
+  }
 
+  // Get the top 3 news articles
+  const topNews = news.slice(0, 3);
 
   return (
     <>
-      <h1 className="mb-10">Top 3 Cryptocurrency News! 🗞️</h1>
-
+      <h2 className="mb-15 text-3xl">Top 3 Cryptocurrency News 🗞️</h2>
       <div
         className="news-container"
         style={{
@@ -35,9 +27,17 @@ function NewsSection({ count = 3 }) {  // Default to 3 news articles
         }}
       >
         {topNews.map((article) => (
-           <NewsCard key={article.url} news={article} />
-           )) }
-          
+          <NewsCard key={article.url} news={article} />
+        ))}
+      </div>
+
+      {/* See All Coins Button */}
+      <div className="text-center mt-10">
+        <Link to="/news">
+          <button className="!bg-amber-700 text-white !text-2x1 rounded hover:bg-amber-800">
+            SEE ALL NEWS
+          </button>
+        </Link>
       </div>
     </>
   );

@@ -19,6 +19,10 @@ function NewsCard({ news }) {
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
+        transition: "transform 0.2s", // Smooth hover effect
+        "&:hover": {
+          transform: "scale(1.05)", // Slight zoom on hover
+        },
       }}
     >
       <img
@@ -26,7 +30,7 @@ function NewsCard({ news }) {
         alt={news.title}
         style={{
           width: "100%",
-          height: "140px",
+          height: "150px",
           objectFit: "cover",
           borderRadius: "5px",
         }}
@@ -35,13 +39,14 @@ function NewsCard({ news }) {
         <Typography
           variant="h6"
           sx={{
-            fontSize: "15px",
-            fontWeight: "bold",
+            fontSize: "17px",
             overflow: "hidden",
             display: "-webkit-box",
             WebkitLineClamp: 3,
             WebkitBoxOrient: "vertical",
             textAlign: "center",
+            color: "white", // Text color
+            fontFamily: "Roboto, sans-serif", // Set font to Roboto
           }}
         >
           {news.title}
