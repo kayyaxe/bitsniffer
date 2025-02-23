@@ -61,21 +61,23 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <NavBar />
-      <Routes>
-        <Route
-          path="/"
-          element={<Home news={news} loading={loading} error={error} />}
-        />
-        <Route path="/coins" element={<AllCoins />} />
-        <Route
-          path="/news"
-          element={<AllNews news={news} loading={loading} error={error} />}
-        />
-        <Route path="/coin/:coinId" element={<CoinDetail />} />
-      </Routes>
-    </Router>
+    <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white min-h-screen">
+      <Router>
+        <NavBar />
+        <Routes>
+          <Route
+            path="/"
+            element={<Home news={news} loading={loading} error={error} />}
+          />
+          <Route path="/coins" element={<AllCoins />} />
+          <Route
+            path="/news"
+            element={<AllNews news={news} loading={loading} error={error} />}
+          />
+          <Route path="/coin/:coinId" element={<CoinDetail />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

@@ -5,7 +5,6 @@ import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "./CoinSection.css";
 import axios from "axios";
 import { Card, CardContent, Typography, Avatar } from "@mui/joy";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
