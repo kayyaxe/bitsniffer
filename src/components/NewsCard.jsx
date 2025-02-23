@@ -9,44 +9,54 @@ function NewsCard({ news }) {
       rel="noopener noreferrer"
       variant="outlined"
       sx={{
-        width: 300,
-        height: 300,
+        width: 320,
+        height: 360,
         textAlign: "center",
-        boxShadow: 3,
+        boxShadow: 4,
         padding: 2,
-        backgroundColor: "transparent",
+        backgroundColor: "rgba(255, 255, 255, 0.05)", // Subtle transparent background
+        borderRadius: "12px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
-        transition: "transform 0.2s", // Smooth hover effect
+        transition: "transform 0.3s, box-shadow 0.3s", // Smooth hover effect
         "&:hover": {
           transform: "scale(1.05)", // Slight zoom on hover
+          boxShadow: "0px 8px 20px rgba(255, 255, 255, 0.2)", // Softer hover effect
         },
       }}
     >
-      <img
-        src={news.image}
-        alt={news.title}
+      <div
         style={{
-          width: "100%",
-          height: "150px",
-          objectFit: "cover",
-          borderRadius: "5px",
+          position: "relative",
+          borderRadius: "10px",
+          overflow: "hidden",
         }}
-      />
-      <CardContent sx={{ flexGrow: 1, padding: 1 }}>
+      >
+        <img
+          src={news.image}
+          alt={news.title}
+          style={{
+            objectFit: "cover",
+          }}
+        />
+        {/* Gradient Overlay */}
+      </div>
+
+      <CardContent sx={{ flexGrow: 1, padding: "16px" }}>
         <Typography
           variant="h6"
           sx={{
-            fontSize: "17px",
+            fontSize: "23px",
             overflow: "hidden",
             display: "-webkit-box",
             WebkitLineClamp: 3,
             WebkitBoxOrient: "vertical",
             textAlign: "center",
-            color: "white", // Text color
-            fontFamily: "Roboto, sans-serif", // Set font to Roboto
+            color: "white",
+            fontWeight: "bold",
+            fontFamily: "Roboto, sans-serif",
           }}
         >
           {news.title}

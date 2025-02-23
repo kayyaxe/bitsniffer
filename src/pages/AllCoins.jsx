@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
-
 import {
   Table,
   TableBody,
@@ -18,10 +17,10 @@ import {
 
 function AllCoins() {
   const [coins, setCoins] = useState([]);
-  const [filteredCoins, setFilteredCoins] = useState([]); // For the filtered coins
+  const [filteredCoins, setFilteredCoins] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [query, setQuery] = useState(""); // User's search query
+  const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -47,25 +46,20 @@ function AllCoins() {
     const primaryApiKey = import.meta.env.VITE_COINS_API_KEY;
     const backupApiKey = import.meta.env.VITE_BACKUP_COINS_API_KEY;
 
-    // First attempt with the primary API key
     fetchCoins(primaryApiKey).catch(() => {
-      // If it fails, attempt with the backup API key
       fetchCoins(backupApiKey);
     });
   }, [page, rowsPerPage]);
 
-  // Handle search input change
   const handleSearchChange = (e) => {
     const value = e.target.value.toLowerCase();
     setQuery(value);
-
-    // Filter coins based on the search query
     const filtered = coins.filter(
       (coin) =>
         coin.name.toLowerCase().includes(value) ||
         coin.symbol.toLowerCase().includes(value)
     );
-    setFilteredCoins(filtered); // Update filtered coins
+    setFilteredCoins(filtered);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -74,26 +68,59 @@ function AllCoins() {
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // Reset to the first page when changing rows per page
+    setPage(0);
+  };
+
+  // Common styles for rows and cells
+  const commonRowStyles = {
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.1)",
+      cursor: "pointer",
+    },
+    transition: "background-color 0.3s",
+    minHeight: "65px", // Set a minimum height for uniformity
+  };
+
+  const commonCellStyles = {
+    color: "white",
+    textAlign: "right",
+    fontSize: "20px",
+    padding: "20px", // Consistent padding
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap", // Prevents text wrapping
   };
 
   return (
-    <div>
-      <Typography variant="h4" gutterBottom>
-        Cryptocurrency Prices by Market Cap
+    <div style={{ padding: "20px", color: "white" }}>
+      <Typography variant="h3" gutterBottom>
+        Cryptocurrency Prices
       </Typography>
 
-      {/* Search Bar */}
       <div style={{ marginBottom: "20px" }}>
         <Input
           placeholder="Search for a coin..."
           value={query}
-          onChange={handleSearchChange} // Update search query
-          sx={{ width: "100%", padding: "10px", color: "white" }}
+          onChange={handleSearchChange}
+          sx={{
+            width: "95%",
+            height: 70,
+            padding: "10px",
+            borderRadius: "2px",
+            backgroundColor: "#333",
+            color: "white",
+            border: "none",
+            fontSize: "22px",
+            "&:hover": {
+              outline: "2px solid #fff", // Outline effect on hover
+            },
+            "&:focus": {
+              outline: "2px solid #fff", // Outline effect when focused
+            },
+          }}
         />
       </div>
 
-      {/* Loading Spinner */}
       {loading && (
         <div
           style={{
@@ -106,7 +133,6 @@ function AllCoins() {
         </div>
       )}
 
-      {/* Error Message */}
       {error && (
         <div
           style={{
@@ -120,44 +146,115 @@ function AllCoins() {
         </div>
       )}
 
-      {/* Table */}
-      <TableContainer component={Paper} sx={{ minWidth: "1000px" }}>
-        <Table>
+      <TableContainer
+        component={Paper}
+        sx={{
+          width: "100%", // Use full width
+          height: "100%", // Use full height
+          backgroundColor: "transparent",
+          boxShadow: "none",
+          padding: "30px", // Add padding to the table container
+        }}
+      >
+        <Table sx={{ borderRadius: "8px" }}>
           <TableHead>
             <TableRow>
-              <TableCell>Rank</TableCell>
-              <TableCell>Coin</TableCell>
-              <TableCell align="right">Price</TableCell>
-              <TableCell align="right">24h %</TableCell>
-              <TableCell align="right">7d %</TableCell>
-              <TableCell align="right">Market Cap</TableCell>
-              <TableCell align="right">Volume (24h)</TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: "25px",
+                  textAlign: "left",
+                }}
+              >
+                Rank
+              </TableCell>
+              <TableCell
+                sx={{ color: "white", fontWeight: "bold", fontSize: "25px" }}
+              >
+                Coin
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: "25px",
+                  textAlign: "right",
+                }}
+              >
+                Price
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: "25px",
+                  textAlign: "right",
+                }}
+              >
+                24h %
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: "25px",
+                  textAlign: "right",
+                }}
+              >
+                7d %
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: "25px",
+                  textAlign: "right",
+                }}
+              >
+                Market Cap
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: "25px",
+                  textAlign: "right",
+                }}
+              >
+                Volume (24h)
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredCoins.map((coin) => (
-              <TableRow key={coin.id}>
-                <TableCell>{coin.market_cap_rank}</TableCell>
-                <TableCell>
-                  <Link
-                    to={`/coin/${coin.id}`}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
+              <TableRow
+                key={coin.id}
+                sx={commonRowStyles}
+                onClick={() => {
+                  window.location.href = `/coin/${coin.id}`;
+                }}
+              >
+                <TableCell sx={{ ...commonCellStyles, textAlign: "left" }}>
+                  {coin.market_cap_rank}
+                </TableCell>
+                <TableCell sx={commonCellStyles}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <img
                       src={coin.image}
                       alt={coin.name}
-                      width="20"
-                      style={{ marginRight: 8, verticalAlign: "middle" }}
+                      width="50"
+                      style={{ marginRight: 8 }}
                     />
                     {coin.name}
-                  </Link>
+                  </div>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell sx={commonCellStyles}>
                   ${coin.current_price.toLocaleString()}
                 </TableCell>
                 <TableCell
-                  align="right"
-                  style={{
+                  sx={{
+                    ...commonCellStyles,
                     color:
                       coin.price_change_percentage_24h >= 0 ? "green" : "red",
                   }}
@@ -165,8 +262,8 @@ function AllCoins() {
                   {coin.price_change_percentage_24h?.toFixed(2)}%
                 </TableCell>
                 <TableCell
-                  align="right"
-                  style={{
+                  sx={{
+                    ...commonCellStyles,
                     color:
                       coin.price_change_percentage_7d_in_currency >= 0
                         ? "green"
@@ -175,10 +272,10 @@ function AllCoins() {
                 >
                   {coin.price_change_percentage_7d_in_currency?.toFixed(2)}%
                 </TableCell>
-                <TableCell align="right">
+                <TableCell sx={commonCellStyles}>
                   ${coin.market_cap.toLocaleString()}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell sx={commonCellStyles}>
                   ${coin.total_volume.toLocaleString()}
                 </TableCell>
               </TableRow>
@@ -187,15 +284,15 @@ function AllCoins() {
         </Table>
       </TableContainer>
 
-      {/* Pagination Component */}
       <TablePagination
         rowsPerPageOptions={[10, 25, 50]}
         component="div"
-        count={100} // Assuming API supports 100+ coins
+        count={filteredCoins.length} // Count based on filtered results
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        sx={{ color: "white" }} // Set pagination text color to white
       />
     </div>
   );

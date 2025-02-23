@@ -8,6 +8,7 @@ import AllCoins from "./pages/AllCoins";
 import AllNews from "./pages/AllNews";
 import NavBar from "./components/NavBar";
 import CoinDetail from "./pages/CoinDetail";
+import Footer from "./components/Footer";
 
 function App() {
   const [news, setNews] = useState([]); // Store news data
@@ -61,21 +62,24 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white min-h-screen">
+    <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white min-h-screen flex flex-col">
       <Router>
         <NavBar />
-        <Routes>
-          <Route
-            path="/"
-            element={<Home news={news} loading={loading} error={error} />}
-          />
-          <Route path="/coins" element={<AllCoins />} />
-          <Route
-            path="/news"
-            element={<AllNews news={news} loading={loading} error={error} />}
-          />
-          <Route path="/coin/:coinId" element={<CoinDetail />} />
-        </Routes>
+        <div className="mt-16 ">
+          <Routes>
+            <Route
+              path="/"
+              element={<Home news={news} loading={loading} error={error} />}
+            />
+            <Route path="/coins" element={<AllCoins />} />
+            <Route
+              path="/news"
+              element={<AllNews news={news} loading={loading} error={error} />}
+            />
+            <Route path="/coin/:coinId" element={<CoinDetail />} />
+          </Routes>
+        </div>
+        <Footer /> {/* Footer should still be placed here */}
       </Router>
     </div>
   );

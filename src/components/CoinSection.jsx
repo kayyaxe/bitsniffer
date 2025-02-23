@@ -38,8 +38,9 @@ function CoinSection() {
         modules={[Autoplay, Navigation]}
         className="w-[800px] h-[400px]"
         slidesPerView={3}
-        spaceBetween={10}
+        spaceBetween={170}
         loop={true}
+        loopAdditionalSlides={3} // Helps Swiper duplicate slides for looping
         pagination={{
           clickable: true,
         }}
@@ -61,7 +62,10 @@ function CoinSection() {
             >
               <CardContent>
                 {/* Ranking and Symbol */}
-                <Typography level="h3" className="!mb-10 !text-gray-400">
+                <Typography
+                  level="h3"
+                  className="!mb-10 !text-gray-400 !text-3xl"
+                >
                   #{coin.market_cap_rank}
                 </Typography>
                 <Avatar
@@ -69,13 +73,13 @@ function CoinSection() {
                   alt={coin.symbol.toUpperCase()}
                   sx={{ width: 100, height: 100, margin: "auto" }}
                 />
-                <Typography level="5" className="!text-white !mt-10 !text-2xl">
+                <Typography level="5" className="!text-white !mt-8 !text-4xl">
                   {coin.symbol.toUpperCase()}
                 </Typography>
 
                 <Typography
                   variant="h5"
-                  className="!text-amber-500 !mt-5 !text-2xl"
+                  className="!text-amber-500 !mt-5 !text-3xl"
                 >
                   ${coin.current_price.toFixed(2)}
                 </Typography>
@@ -88,7 +92,7 @@ function CoinSection() {
       {/* See All Coins Button */}
       <div className="text-center mt-3">
         <Link to="/coins">
-          <button className="!bg-amber-700 text-white !text-2x1 rounded hover:bg-amber-800">
+          <button className="!bg-amber-700 !text-white !px-6 !py-3 !text-xl !font-semibold !rounded-lg hover:!bg-amber-800 !outline-none focus:!ring-0  focus:!ring-transparent">
             SEE ALL COINS
           </button>
         </Link>

@@ -1,11 +1,13 @@
 import React from "react";
 import { Drawer, List, ListItem, Divider, Typography } from "@mui/joy";
-import { ListItemText } from "@mui/material"; // Import from MUI material
+import { ListItemText } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import IconButton from "@mui/joy/IconButton"; // Import IconButton from MUI Joy
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"; // Import back arrow
-import { Link } from "react-router-dom"; // Import Link for routing
-import { styled, useTheme } from "@mui/material/styles";
+import IconButton from "@mui/joy/IconButton";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Link } from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home"; // Import icons
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn"; // Icon for All Coins
+import ArticleIcon from "@mui/icons-material/Article"; // Icon for All News
 
 function NavBar() {
   const [open, setOpen] = React.useState(false);
@@ -24,8 +26,9 @@ function NavBar() {
         <MenuIcon />
       </IconButton>
 
-      {/* Drawer */}
+      {/* Mini Variant Drawer */}
       <Drawer
+        variant="temporary"
         anchor="left"
         open={open}
         onClose={toggleDrawer}
@@ -33,7 +36,7 @@ function NavBar() {
           width: 200,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: 200,
+            width: open ? 200 : 56, // Change width based on open state
             boxSizing: "border-box",
             padding: 1,
           },
@@ -44,22 +47,29 @@ function NavBar() {
           <IconButton onClick={toggleDrawer}>
             <ArrowBackIcon />
           </IconButton>
-          <Typography level="h6" sx={{ marginLeft: "10px" }}>
-            Menu
-          </Typography>
+          {open && ( // Show title only if open
+            <Typography level="h6" sx={{ marginLeft: "10px" }}>
+              Menu
+            </Typography>
+          )}
         </div>
         <Divider />
 
         <List>
           <ListItem component={Link} to="/" onClick={toggleDrawer}>
-            <ListItemText primary="Home" />
+            {open ? <ListItemText primary="Home" /> : <HomeIcon />}
           </ListItem>
           <Divider />
           <ListItem component={Link} to="/coins" onClick={toggleDrawer}>
-            <ListItemText primary="All Coins" />
+            {open ? (
+              <ListItemText primary="All Coins" />
+            ) : (
+              <MonetizationOnIcon />
+            )}
           </ListItem>
+          <Divider />
           <ListItem component={Link} to="/news" onClick={toggleDrawer}>
-            <ListItemText primary="All News" />
+            {open ? <ListItemText primary="All News" /> : <ArticleIcon />}
           </ListItem>
         </List>
       </Drawer>

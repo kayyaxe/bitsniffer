@@ -22,7 +22,7 @@ function NewsSection({ news, loading, error }) {
         style={{
           display: "flex",
           justifyContent: "center",
-          gap: "20px",
+          gap: "100px",
           flexWrap: "wrap",
         }}
       >
@@ -34,7 +34,7 @@ function NewsSection({ news, loading, error }) {
       {/* See All Coins Button */}
       <div className="text-center mt-10">
         <Link to="/news">
-          <button className="!bg-amber-700 text-white !text-2x1 rounded hover:bg-amber-800">
+          <button className="!bg-amber-700 !text-white !px-6 !py-3 !text-xl !font-semibold !rounded-lg hover:!bg-amber-800 !">
             SEE ALL NEWS
           </button>
         </Link>
