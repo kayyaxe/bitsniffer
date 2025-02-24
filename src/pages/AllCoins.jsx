@@ -26,6 +26,8 @@ function AllCoins() {
 
   useEffect(() => {
     const fetchCoins = async (apiKey) => {
+      console.log(`Using API Key: ${apiKey}`); // Log the API key being used
+
       setLoading(true);
       try {
         const response = await axios.get(
@@ -35,6 +37,7 @@ function AllCoins() {
         );
         setCoins(response.data);
         setFilteredCoins(response.data);
+        setError(null); // Reset error state on successful fetch
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Failed to fetch coins. Please try again later.");
@@ -46,6 +49,7 @@ function AllCoins() {
     const primaryApiKey = import.meta.env.VITE_COINS_API_KEY;
     const backupApiKey = import.meta.env.VITE_BACKUP_COINS_API_KEY;
 
+    // Attempt to fetch with the primary key, if it fails, try the backup key
     fetchCoins(primaryApiKey).catch(() => {
       fetchCoins(backupApiKey);
     });
@@ -78,17 +82,18 @@ function AllCoins() {
       cursor: "pointer",
     },
     transition: "background-color 0.3s",
-    minHeight: "65px", // Set a minimum height for uniformity
   };
 
   const commonCellStyles = {
     color: "white",
     textAlign: "right",
-    fontSize: "20px",
+    fontSize: "22px",
     padding: "20px", // Consistent padding
     overflow: "hidden",
     textOverflow: "ellipsis",
-    whiteSpace: "nowrap", // Prevents text wrapping
+    whiteSpace: "nowrap", // Prevents text
+    height: "120px", // Set a fixed height for each cell
+    verticalAlign: "middle", // Center content vertically
   };
 
   return (
@@ -97,13 +102,13 @@ function AllCoins() {
         Cryptocurrency Prices
       </Typography>
 
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "15px", marginTop: "45px" }}>
         <Input
           placeholder="Search for a coin..."
           value={query}
           onChange={handleSearchChange}
           sx={{
-            width: "95%",
+            width: "82%",
             height: 70,
             padding: "10px",
             borderRadius: "2px",
@@ -149,11 +154,11 @@ function AllCoins() {
       <TableContainer
         component={Paper}
         sx={{
-          width: "100%", // Use full width
-          height: "100%", // Use full height
+          width: "85%",
+          margin: "auto", // Center the table
           backgroundColor: "transparent",
           boxShadow: "none",
-          padding: "30px", // Add padding to the table container
+          padding: "30px",
         }}
       >
         <Table sx={{ borderRadius: "8px" }}>
@@ -162,22 +167,18 @@ function AllCoins() {
               <TableCell
                 sx={{
                   color: "white",
-                  fontWeight: "bold",
                   fontSize: "25px",
                   textAlign: "left",
                 }}
               >
                 Rank
               </TableCell>
-              <TableCell
-                sx={{ color: "white", fontWeight: "bold", fontSize: "25px" }}
-              >
+              <TableCell sx={{ color: "white", fontSize: "25px" }}>
                 Coin
               </TableCell>
               <TableCell
                 sx={{
                   color: "white",
-                  fontWeight: "bold",
                   fontSize: "25px",
                   textAlign: "right",
                 }}
@@ -187,7 +188,6 @@ function AllCoins() {
               <TableCell
                 sx={{
                   color: "white",
-                  fontWeight: "bold",
                   fontSize: "25px",
                   textAlign: "right",
                 }}
@@ -197,7 +197,6 @@ function AllCoins() {
               <TableCell
                 sx={{
                   color: "white",
-                  fontWeight: "bold",
                   fontSize: "25px",
                   textAlign: "right",
                 }}
@@ -207,7 +206,6 @@ function AllCoins() {
               <TableCell
                 sx={{
                   color: "white",
-                  fontWeight: "bold",
                   fontSize: "25px",
                   textAlign: "right",
                 }}
@@ -217,7 +215,6 @@ function AllCoins() {
               <TableCell
                 sx={{
                   color: "white",
-                  fontWeight: "bold",
                   fontSize: "25px",
                   textAlign: "right",
                 }}
@@ -256,7 +253,9 @@ function AllCoins() {
                   sx={{
                     ...commonCellStyles,
                     color:
-                      coin.price_change_percentage_24h >= 0 ? "green" : "red",
+                      coin.price_change_percentage_24h >= 0
+                        ? "#00FF00"
+                        : "#FF4500",
                   }}
                 >
                   {coin.price_change_percentage_24h?.toFixed(2)}%
@@ -266,8 +265,8 @@ function AllCoins() {
                     ...commonCellStyles,
                     color:
                       coin.price_change_percentage_7d_in_currency >= 0
-                        ? "green"
-                        : "red",
+                        ? "#00FF00"
+                        : "#FF4500",
                   }}
                 >
                   {coin.price_change_percentage_7d_in_currency?.toFixed(2)}%
@@ -282,18 +281,60 @@ function AllCoins() {
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
 
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50]}
-        component="div"
-        count={filteredCoins.length} // Count based on filtered results
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        sx={{ color: "white" }} // Set pagination text color to white
-      />
+        {/* Centered Pagination */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "10px 0",
+            fontsize: 15,
+          }}
+        >
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 50]}
+            component="div"
+            count={coins.length} // Ensure this is the total number of coins
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            nextIconButtonProps={{ disabled: false }}
+            backIconButtonProps={{ disabled: false }}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              fontSize: "20px",
+              color: "white",
+              marginTop: "10px",
+              "& .MuiTablePagination-selectLabel": {
+                fontSize: "20px",
+                color: "white",
+              },
+              "& .MuiInputBase-root": {
+                color: "white",
+              },
+              "& .MuiSelect-icon": {
+                color: "white", // Ensures dropdown arrow is white
+              },
+              "& .MuiInputBase-input": {
+                fontSize: "20px",
+                color: "white",
+              },
+              "& .MuiTablePagination-displayedRows": {
+                fontSize: "20px",
+                color: "white",
+              },
+              "& .MuiTablePagination-actions button": {
+                fontSize: "24px",
+                color: "white",
+                pointerEvents: "auto", // Allow clicking
+                cursor: "pointer", // Show pointer cursor
+              },
+            }}
+          />
+        </div>
+      </TableContainer>
     </div>
   );
 }
