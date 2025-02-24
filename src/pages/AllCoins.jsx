@@ -87,12 +87,12 @@ function AllCoins() {
   const commonCellStyles = {
     color: "white",
     textAlign: "right",
-    fontSize: "22px",
-    padding: "20px", // Consistent padding
+    fontSize: "20px",
+    padding: "15px", // Consistent padding
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap", // Prevents text
-    height: "120px", // Set a fixed height for each cell
+    height: "50px", // Set a fixed height for each cell
     verticalAlign: "middle", // Center content vertically
   };
 
@@ -167,19 +167,19 @@ function AllCoins() {
               <TableCell
                 sx={{
                   color: "white",
-                  fontSize: "25px",
+                  fontSize: "20px",
                   textAlign: "left",
                 }}
               >
                 Rank
               </TableCell>
-              <TableCell sx={{ color: "white", fontSize: "25px" }}>
+              <TableCell sx={{ color: "white", fontSize: "20px" }}>
                 Coin
               </TableCell>
               <TableCell
                 sx={{
                   color: "white",
-                  fontSize: "25px",
+                  fontSize: "20px",
                   textAlign: "right",
                 }}
               >
@@ -188,7 +188,7 @@ function AllCoins() {
               <TableCell
                 sx={{
                   color: "white",
-                  fontSize: "25px",
+                  fontSize: "20px",
                   textAlign: "right",
                 }}
               >
@@ -197,7 +197,7 @@ function AllCoins() {
               <TableCell
                 sx={{
                   color: "white",
-                  fontSize: "25px",
+                  fontSize: "20px",
                   textAlign: "right",
                 }}
               >
@@ -206,7 +206,7 @@ function AllCoins() {
               <TableCell
                 sx={{
                   color: "white",
-                  fontSize: "25px",
+                  fontSize: "20px",
                   textAlign: "right",
                 }}
               >
@@ -215,7 +215,7 @@ function AllCoins() {
               <TableCell
                 sx={{
                   color: "white",
-                  fontSize: "25px",
+                  fontSize: "20px",
                   textAlign: "right",
                 }}
               >

@@ -36,11 +36,11 @@ function CoinSection() {
       <h2 className="mb-15 text-3xl">Top 10 Cryptocurrency by Market Cap 🚀</h2>
       <Swiper
         modules={[Autoplay, Navigation]}
-        className="w-[800px] h-[400px]"
+        className="w-[800px] h-[350px]"
         slidesPerView={3}
-        spaceBetween={170}
+        spaceBetween={150}
         loop={true}
-        loopAdditionalSlides={3} // Helps Swiper duplicate slides for looping
+        loopAdditionalSlides={3}
         pagination={{
           clickable: true,
         }}
@@ -52,45 +52,47 @@ function CoinSection() {
             key={coin.id}
             className="flex justify-center items-center text-lg"
           >
-            <Card
-              variant="plain"
-              sx={{
-                textAlign: "center",
-                padding: 2,
-                backgroundColor: "transparent",
-              }}
-            >
-              <CardContent>
-                {/* Ranking and Symbol */}
-                <Typography
-                  level="h3"
-                  className="!mb-10 !text-gray-400 !text-3xl"
-                >
-                  #{coin.market_cap_rank}
-                </Typography>
-                <Avatar
-                  src={coin.image}
-                  alt={coin.symbol.toUpperCase()}
-                  sx={{ width: 100, height: 100, margin: "auto" }}
-                />
-                <Typography level="5" className="!text-white !mt-8 !text-4xl">
-                  {coin.symbol.toUpperCase()}
-                </Typography>
+            <Link to={`/coin/${coin.id}`} style={{ textDecoration: "none" }}>
+              <Card
+                variant="plain"
+                sx={{
+                  textAlign: "center",
+                  padding: 2,
+                  backgroundColor: "transparent",
+                }}
+              >
+                <CardContent>
+                  {/* Ranking and Symbol */}
+                  <Typography
+                    level="h3"
+                    className="!mb-10 !text-gray-400 !text-3xl"
+                  >
+                    #{coin.market_cap_rank}
+                  </Typography>
+                  <Avatar
+                    src={coin.image}
+                    alt={coin.symbol.toUpperCase()}
+                    sx={{ width: 80, height: 80, margin: "auto" }}
+                  />
+                  <Typography level="5" className="!text-white !mt-8 !text-3xl">
+                    {coin.symbol.toUpperCase()}
+                  </Typography>
 
-                <Typography
-                  variant="h5"
-                  className="!text-amber-500 !mt-5 !text-3xl"
-                >
-                  ${coin.current_price.toFixed(2)}
-                </Typography>
-              </CardContent>
-            </Card>
+                  <Typography
+                    variant="h5"
+                    className="!text-amber-500 !mt-3 !text-2xl"
+                  >
+                    ${coin.current_price.toFixed(2)}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>
 
       {/* See All Coins Button */}
-      <div className="text-center mt-3">
+      <div className="text-center mb-2">
         <Link to="/coins">
           <button className="!bg-amber-700 !text-white !px-6 !py-3 !text-xl !font-semibold !rounded-lg hover:!bg-amber-800 !outline-none focus:!ring-0  focus:!ring-transparent">
             SEE ALL COINS

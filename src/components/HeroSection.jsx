@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export default function HeroSection() {
   return (
-    <div className="h-[23vh] flex items-center justify-center text-center px-6 bg-gradient-to-b from-gray-900 to-gray-800">
+    <div className="h-[25vh] flex items-center justify-center text-center px-6 bg-gradient-to-b from-gray-900 to-gray-800">
       <div>
         <motion.h1
           className="!text-7xl font-bold"

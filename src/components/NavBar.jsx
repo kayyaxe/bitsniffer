@@ -5,9 +5,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/joy/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from "react-router-dom";
-import HomeIcon from "@mui/icons-material/Home"; // Import icons
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn"; // Icon for All Coins
-import ArticleIcon from "@mui/icons-material/Article"; // Icon for All News
+import HomeIcon from "@mui/icons-material/Home";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import ArticleIcon from "@mui/icons-material/Article";
+import GitHubIcon from "@mui/icons-material/GitHub"; // Import GitHub icon
+import LinkedInIcon from "@mui/icons-material/LinkedIn"; // Import LinkedIn icon
 
 function NavBar() {
   const [open, setOpen] = React.useState(false);
@@ -36,7 +38,7 @@ function NavBar() {
           width: 200,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: open ? 200 : 56, // Change width based on open state
+            width: open ? 200 : 56,
             boxSizing: "border-box",
             padding: 1,
           },
@@ -47,7 +49,7 @@ function NavBar() {
           <IconButton onClick={toggleDrawer}>
             <ArrowBackIcon />
           </IconButton>
-          {open && ( // Show title only if open
+          {open && (
             <Typography level="h6" sx={{ marginLeft: "10px" }}>
               Menu
             </Typography>
@@ -72,6 +74,39 @@ function NavBar() {
             {open ? <ListItemText primary="All News" /> : <ArticleIcon />}
           </ListItem>
         </List>
+
+        {/* Social Links Section */}
+        <Divider sx={{ marginTop: "auto" }} />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: "10px",
+          }}
+        >
+          <ListItem
+            component="a"
+            href="https://github.com/kayyaxe"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={toggleDrawer}
+          >
+            <GitHubIcon />
+            {open && <ListItemText primary="GitHub" />}
+          </ListItem>
+          <Divider />
+          <ListItem
+            component="a"
+            href="https://www.linkedin.com/in/karxuan/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={toggleDrawer}
+          >
+            <LinkedInIcon />
+            {open && <ListItemText primary="LinkedIn" />}
+          </ListItem>
+        </div>
       </Drawer>
     </>
   );

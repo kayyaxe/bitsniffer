@@ -88,9 +88,10 @@ function CoinDetail() {
               {
                 label: "Price (USD)",
                 data: chartValues,
-                borderColor: "#4CAF50",
-                backgroundColor: "rgba(76, 175, 80, 0.2)",
-                fill: true,
+                borderColor: "#007BFF", // Changed to a subdued blue
+                backgroundColor: "rgba(0, 123, 255, 0.2)", // Changed to a subdued blue
+
+                pointRadius: 0.5, // Adjust this value for smaller points
               },
             ],
           });
@@ -117,7 +118,7 @@ function CoinDetail() {
   return (
     <Box
       sx={{
-        height: "100vh", // Set height to 100% of the viewport
+        minHeight: "100vh", // Set height to 100% of the viewport
         display: "flex",
         flexDirection: "column",
         padding: 3,
@@ -165,7 +166,9 @@ function CoinDetail() {
                   label={`Rank: #${coinData.market_cap_rank}`}
                   sx={{
                     marginLeft: 2,
-                    backgroundColor: "#4CAF50",
+                    fontSize: 17,
+                    alignContent: "center",
+                    backgroundColor: "#007BFF", // Changed to a subdued blue
                     color: "#fff",
                   }}
                 />
@@ -200,7 +203,7 @@ function CoinDetail() {
               </Typography>
               <Typography
                 variant="h4"
-                sx={{ fontWeight: "bold", mt: 2, color: "#4CAF50" }} // Use a better-visible color
+                sx={{ fontWeight: "bold", mt: 2, color: "#007BFF" }} // Changed to a subdued blue
               >
                 ${coinData.market_data.current_price.usd.toLocaleString()}
               </Typography>
@@ -209,8 +212,8 @@ function CoinDetail() {
                 sx={{
                   color:
                     coinData.market_data.price_change_percentage_24h >= 0
-                      ? "#00FF00"
-                      : "#FF4500",
+                      ? "#00FF00" // Use a contrasting color for positive changes
+                      : "#FF4500", // Use a contrasting color for negative changes
                   mt: 1,
                   fontWeight: "bold",
                 }}
@@ -225,6 +228,7 @@ function CoinDetail() {
             </Card>
 
             {/* Card Section for Market Data */}
+            {/* Card Section for Links */}
             <Box
               sx={{
                 display: "flex",
@@ -241,15 +245,25 @@ function CoinDetail() {
                   boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
                   flex: 1,
                   marginRight: 1,
-                  width: "48%", // Adjust width to fit within the 80% of parent
                 }}
               >
                 <Typography variant="h6" color="#fff">
-                  Overall Market Cap
+                  Official Website
                 </Typography>
-                <Typography variant="h4" sx={{ color: "#4CAF50" }}>
-                  S${coinData.market_data.market_cap.usd.toLocaleString()}
-                </Typography>
+                <Button
+                  href={coinData.links.homepage[0]} // Link to Bitcoin's official website
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{
+                    color: "#007BFF", // Changed to subdued blue
+                    textDecoration: "underline",
+                    "&:hover": {
+                      color: "#0056b3", // Darker blue for hover
+                    },
+                  }}
+                >
+                  Visit Website
+                </Button>
               </Card>
               <Card
                 sx={{
@@ -259,15 +273,25 @@ function CoinDetail() {
                   boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
                   flex: 1,
                   marginLeft: 1,
-                  width: "48%", // Adjust width to fit within the 80% of parent
                 }}
               >
                 <Typography variant="h6" color="#fff">
-                  Volume (24h)
+                  Reddit Community
                 </Typography>
-                <Typography variant="h4" sx={{ color: "#4CAF50" }}>
-                  S${coinData.market_data.total_volume.usd.toLocaleString()}
-                </Typography>
+                <Button
+                  href={coinData.links.subreddit} // Link to Bitcoin's subreddit
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{
+                    color: "#FF4500", // Reddit color
+                    textDecoration: "underline",
+                    "&:hover": {
+                      color: "#cc3700", // Darker reddit color for hover
+                    },
+                  }}
+                >
+                  Visit Reddit
+                </Button>
               </Card>
             </Box>
 
@@ -282,6 +306,7 @@ function CoinDetail() {
                 display: "flex",
                 flexDirection: "column",
                 width: "80%", // Set width to 80%
+                minHeight: "35%",
 
                 margin: "auto", // Center the chart card
               }}
@@ -305,10 +330,10 @@ function CoinDetail() {
                       fontWeight: "bold",
                       borderRadius: "20px",
                       px: 3,
-                      backgroundColor: timeframe === time ? "#4CAF50" : "",
-                      color: timeframe === time ? "white" : "#4CAF50",
+                      backgroundColor: timeframe === time ? "#007BFF" : "", // Changed to subdued blue
+                      color: timeframe === time ? "white" : "#007BFF", // Changed to subdued blue
                       "&:hover": {
-                        backgroundColor: timeframe === time ? "#388E3C" : "",
+                        backgroundColor: timeframe === time ? "#0056b3" : "", // Darker blue for hover
                       },
                     }}
                   >
