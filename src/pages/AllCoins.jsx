@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import {
   Table,
   TableBody,
@@ -23,7 +24,7 @@ function AllCoins() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate(); // Initialize the navigation hook
   useEffect(() => {
     const fetchCoins = async (apiKey) => {
       console.log(`Using API Key: ${apiKey}`); // Log the API key being used
@@ -229,7 +230,7 @@ function AllCoins() {
                 key={coin.id}
                 sx={commonRowStyles}
                 onClick={() => {
-                  window.location.href = `/coin/${coin.id}`;
+                  navigate(`/coin/${coin.id}`); // Use React Router for navigation
                 }}
               >
                 <TableCell sx={{ ...commonCellStyles, textAlign: "left" }}>
