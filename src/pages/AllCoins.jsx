@@ -87,12 +87,12 @@ function AllCoins() {
   const commonCellStyles = {
     color: "white",
     textAlign: "right",
-    fontSize: "20px",
-    padding: "15px", // Consistent padding
+    fontSize: "15px",
+    padding: "10px", // Consistent padding
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap", // Prevents text
-    height: "50px", // Set a fixed height for each cell
+    height: "45px", // Set a fixed height for each cell
     verticalAlign: "middle", // Center content vertically
   };
 
