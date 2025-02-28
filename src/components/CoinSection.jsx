@@ -36,7 +36,7 @@ function CoinSection() {
       <h2 className="mb-15 text-3xl">Top 10 Cryptocurrency by Market Cap 🚀</h2>
       <Swiper
         modules={[Autoplay, Navigation]}
-        className="w-[800px] h-[350px]"
+        className=" h-[350px]"
         slidesPerView={3}
         spaceBetween={150}
         loop={true}
